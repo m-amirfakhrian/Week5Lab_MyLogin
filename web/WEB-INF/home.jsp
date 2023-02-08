@@ -13,5 +13,10 @@
     </head>
     <body>
         <h1>Hello ${user.username}</h1>
+        
+        <form action="login" method="get">              
+            <input type="submit" value="Logout" >
+            <input type="hidden" name="action" value="logout">
+        </form>
     </body>
 </html>

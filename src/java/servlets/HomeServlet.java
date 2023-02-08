@@ -51,26 +51,40 @@ public class HomeServlet extends HttpServlet {
             return;
         }
 
-        boolean userFound = false;
-        int i = 0;
+       // boolean userFound = false;
+       // int i = 0;
 
-        User currentUser = users.get(0);
-        while (i < users.size() && !userFound) {
-            User user = new User(username, password);
-            if (user.equals(currentUser)) {
-                userFound = true;
-                session.setAttribute("user", user);
-                getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
-                session.setAttribute("user", user);
-            }
-
-            //session.setAttribute("password", password);
+        // User currentUser = users.get(0);
+        // while (i < users.size() && !userFound) {
+        //    User user = new User(username, password);
+        //     if (user.equals(currentUser)) {
+        //         userFound = true;
+        //         session.setAttribute("user", user);
+        //         getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
+        //         session.setAttribute("user", user);
+        //     }
+        //
+        
+        String action = request.getParameter("action");
+        if (action != null && action.equals("logout")) {
+            session.invalidate();
+            session = request.getSession();
+            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
+                    .forward(request, response);
         }
-
+        
+        session.setAttribute("username", username);
+        session.setAttribute("password", password);
+        
+        User user = new User(username, password);
+        getServletContext().getRequestDispatcher("/WEB-INF/home.jsp")
+                    .forward(request, response);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+
+
+@Override
+        protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
     }
