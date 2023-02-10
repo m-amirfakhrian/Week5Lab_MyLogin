@@ -28,9 +28,12 @@
             <input type="submit" value="Log in" >
         </form>
 
-        <c:if test="${invalid == true}">
+        <c:if test="${nullInvalid == true}">
             <p>Invalid Entry. Please enter both username and password.</p>
-        </c:if>       
+        </c:if> 
+        <c:if test="${uORpInvalid == true}">
+            <p>Invalid username and/or password.</p>
+        </c:if> 
 
     </body>
 </html>

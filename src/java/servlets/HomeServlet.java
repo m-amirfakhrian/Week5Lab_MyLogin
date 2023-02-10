@@ -24,30 +24,53 @@ public class HomeServlet extends HttpServlet {
         String path = getServletContext().getRealPath("/WEB-INF/data.txt");
         HttpSession session = request.getSession();
         ArrayList<User> users = (ArrayList<User>) session.getAttribute("users");
-
-        try (Scanner dataFile = new Scanner(Paths.get(path))) {
-
-            while (dataFile.hasNextLine()) {
-                String userData = dataFile.nextLine();
-                String[] userDataSplit = userData.split(" ");
-                String username = userDataSplit[0];
-                String password = userDataSplit[1];
-                request.setAttribute("username", username);
-                request.setAttribute("password", password);
-                User newUser = new User(username, password);
-                users.add(newUser);                
-            }
-        } catch (Exception e1) {
-            System.out.println("Error in Opening File! " + e1.getMessage());
+        if (users == null) {
+            users = new ArrayList<>();
         }
 
+        User user1 = new User("abe", "password");
+        User user2 = new User("barb", "password");
+        users.add(user1);
+        users.add(user2);
+        session.setAttribute("users", users);
+        //try (Scanner dataFile = new Scanner(Paths.get(path))) {
+
+        //    while (dataFile.hasNextLine()) {
+        //        String userData = dataFile.nextLine();
+        //        String[] userDataSplit = userData.split(" ");
+        //        String username = userDataSplit[0];
+        //        String password = userDataSplit[1];
+        //        request.setAttribute("username", username);
+        //        request.setAttribute("password", password);
+        //        User newUser = new User(username, password);
+        //        users.add(newUser);                
+        //    }
+        //} catch (Exception e1) {
+        //    System.out.println("Error in Opening File! " + e1.getMessage());
+        //}
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        if ((username == null || username.equals("")) || (password == null || password.equals(""))) {
+        if ((username == null || username.equals("")) || (password == null || password.equals(""))) {            
+            request.setAttribute("nullInvalid", true);
+
+            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
+                    .forward(request, response);
+            return;
+        }
+
+        if (username != null && password != null) {
             request.setAttribute("username", username);
             request.setAttribute("password", password);
-            request.setAttribute("invalid", true);
+            User newUser = new User(username, password);
+            if (newUser.login(user1) || newUser.login(user2)) {
+                session.setAttribute("user", newUser);
+                
+                getServletContext().getRequestDispatcher("/WEB-INF/home.jsp")
+                        .forward(request, response);
+            } else {
+                request.setAttribute("uORpInvalid", true);
+            }
 
             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
                     .forward(request, response);
@@ -77,13 +100,8 @@ public class HomeServlet extends HttpServlet {
                     .forward(request, response);
         }
 
-        session.setAttribute("username", username);
-        session.setAttribute("password", password);
-        User user = new User(username, password);
-        session.setAttribute("user", user);
+        
 
-        getServletContext().getRequestDispatcher("/WEB-INF/home.jsp")
-                .forward(request, response);
     }
 
     @Override
