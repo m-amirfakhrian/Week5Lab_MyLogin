@@ -12,7 +12,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login Page</title>
     </head>
-     <body>
+    <body>
         <h2>Login</h2>
         <form action="home" method="get">
             <table>               
@@ -27,10 +27,10 @@
             </table>      
             <input type="submit" value="Log in" >
         </form>
-        
+
         <c:if test="${invalid == true}">
-            <p>Invalid Entry. Please enter both your first and last name.</p>
-        </c:if>
-        
+            <p>Invalid Entry. Please enter both username and password.</p>
+        </c:if>       
+
     </body>
 </html>

@@ -33,8 +33,19 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    public String getPassword() {
+        return password;
+    }
+    
+    public boolean login(User user){
+        if(this.username.equals(user.username) && this.password.equals(user.password))
+            return true;
+        else return false;
+    }
+
     @Override
     public String toString() {
-        return username + " " + password ;
+        return username + " " + password;
     }
+
 }

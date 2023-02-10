@@ -30,9 +30,12 @@ public class HomeServlet extends HttpServlet {
             while (dataFile.hasNextLine()) {
                 String userData = dataFile.nextLine();
                 String[] userDataSplit = userData.split(" ");
-                User newUser = new User(userDataSplit[0], userDataSplit[1]);
-                users.add(newUser);
-                System.out.println(newUser);
+                String username = userDataSplit[0];
+                String password = userDataSplit[1];
+                request.setAttribute("username", username);
+                request.setAttribute("password", password);
+                User newUser = new User(username, password);
+                users.add(newUser);                
             }
         } catch (Exception e1) {
             System.out.println("Error in Opening File! " + e1.getMessage());
@@ -51,20 +54,21 @@ public class HomeServlet extends HttpServlet {
             return;
         }
 
-       // boolean userFound = false;
-       // int i = 0;
-
-        // User currentUser = users.get(0);
-        // while (i < users.size() && !userFound) {
-        //    User user = new User(username, password);
-        //     if (user.equals(currentUser)) {
-        //         userFound = true;
-        //         session.setAttribute("user", user);
-        //         getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
-        //         session.setAttribute("user", user);
-        //     }
-        //
-        
+        //boolean userFound = false;
+        //int i = 0;
+        //while (i < users.size() && !userFound) {
+        //    User currentUser = users.get(i);
+        //    if (user.equals(currentUser)) {
+        //        userFound = true;
+        //        session.setAttribute("user", user);
+        //        getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
+        //session.setAttribute("user", user);
+        //    }
+        //    i++;
+        //}
+        //if (i == users.size()){
+        //    request.setAttribute("invalid2", true);
+        //}
         String action = request.getParameter("action");
         if (action != null && action.equals("logout")) {
             session.invalidate();
@@ -72,19 +76,18 @@ public class HomeServlet extends HttpServlet {
             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
                     .forward(request, response);
         }
-        
+
         session.setAttribute("username", username);
         session.setAttribute("password", password);
-        
         User user = new User(username, password);
+        session.setAttribute("user", user);
+
         getServletContext().getRequestDispatcher("/WEB-INF/home.jsp")
-                    .forward(request, response);
+                .forward(request, response);
     }
 
-
-
-@Override
-        protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
     }
