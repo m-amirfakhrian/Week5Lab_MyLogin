@@ -21,7 +21,16 @@ public class HomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String path = getServletContext().getRealPath("/WEB-INF/data.txt");
+        getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
+                    .forward(request, response);
+        
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+String path = getServletContext().getRealPath("/WEB-INF/data.txt");
         HttpSession session = request.getSession();
         ArrayList<User> users = (ArrayList<User>) session.getAttribute("users");
         if (users == null) {
@@ -33,21 +42,22 @@ public class HomeServlet extends HttpServlet {
         users.add(user1);
         users.add(user2);
         session.setAttribute("users", users);
-        //try (Scanner dataFile = new Scanner(Paths.get(path))) {
-
-        //    while (dataFile.hasNextLine()) {
-        //        String userData = dataFile.nextLine();
-        //        String[] userDataSplit = userData.split(" ");
-        //        String username = userDataSplit[0];
-        //        String password = userDataSplit[1];
-        //        request.setAttribute("username", username);
-        //        request.setAttribute("password", password);
-        //        User newUser = new User(username, password);
-        //        users.add(newUser);                
-        //    }
-        //} catch (Exception e1) {
-        //    System.out.println("Error in Opening File! " + e1.getMessage());
-        //}
+//        try (Scanner dataFile = new Scanner(Paths.get(path))) {
+//
+//            while (dataFile.hasNextLine()) {
+//                String userData = dataFile.nextLine();
+//                String[] userDataSplit = userData.split(" ");
+//                String username = userDataSplit[0];
+//                String password = userDataSplit[1];
+//                request.setAttribute("username", username);
+//                request.setAttribute("password", password);
+//                User newUser = new User(username, password);
+//                users.add(newUser);                
+//            }
+//        } catch (Exception e1) {
+//            System.out.println("Error in Opening File! " + e1.getMessage());
+//        }
+        
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
@@ -99,14 +109,6 @@ public class HomeServlet extends HttpServlet {
             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp")
                     .forward(request, response);
         }
-
-        
-
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
 
     }
 

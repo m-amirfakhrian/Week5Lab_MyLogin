@@ -14,7 +14,7 @@
     </head>
     <body>
         <h2>Login</h2>
-        <form action="home" method="get">
+        <form action="home" method="post">
             <table>               
                 <tr>
                     <td>Username</td>

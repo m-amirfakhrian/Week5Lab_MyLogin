@@ -12,7 +12,8 @@
         <title>Welcome</title>
     </head>
     <body>
-        <h1>Hello ${user.username}</h1>
+        <h1>Home Page</h1>
+        <h3>Hello ${user.username}</h3>
         
         <form action="login" method="get">              
             <input type="submit" value="Logout" >
